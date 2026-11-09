@@ -16,7 +16,9 @@ class Parent:
     def get_love_for_child(self):
         return self.love_for_child
     def set_love_for_child(self, love_for_child):
+        love_for_child = random.randint(0, 100)
         self.love_for_child = love_for_child
+        return self.love_for_child
     def set_wealth_bracket(self, wealth_bracket):
         wealth_brackets = ["homeless", "low", "low-mid", "mid_low", "mid", "middle_high", "high", "very_high", "elon_musk"]
         number = random.randint(0, 1000)

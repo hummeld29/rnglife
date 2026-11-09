@@ -1,5 +1,6 @@
 import random
 from parents import Parent
+import sys
 
 
 class player:
@@ -32,6 +33,7 @@ class player:
     def die(self):
         self.health = 0
         print(f"{self.name} has died.")
+        sys.exit()
     def get_height(self):
         return self.height
 
@@ -65,5 +67,92 @@ class player:
         return self.age
 
     def set_height(self, height):
-        c = random.randint(57, )
+        c = random.randint(57, 96)
+        self.height = c
+        return self.height
+
+    def set_health(self, health):
+        health = max(0, min(100, health))
+        self.health = health
+        return self.health
+
+    def set_looks(self, looks):
+        c = random.randint(0, 10)
+        self.looks = c
+        return self.looks
+
+    def set_sex(self, sex):
+        c = input("Enter sex: ")
+        self.sex = c
+        return self.sex
+
+    def set_money(self, money):
+        wealth_bracket = self.Parent.get_wealth_bracket()
+        if wealth_bracket == "homeless":
+            c = random.randint(0, 100)
+        elif wealth_bracket == "low":
+            c = random.randint(100, 500)
+        elif wealth_bracket == "low-mid":
+            c = random.randint(500, 1000)
+        elif wealth_bracket == "mid_low":
+            c = random.randint(1000, 2000)
+        elif wealth_bracket == "mid":
+            c = random.randint(2000, 5000)
+        elif wealth_bracket == "middle_high":
+            c = random.randint(5000, 10000)
+        elif wealth_bracket == "high":
+            c = random.randint(10000, 50000)
+        elif wealth_bracket == "very_high":
+            c = random.randint(50000, 100000)
+        else:
+            c = random.randint(100000, 1000000)
+        self.money = c
+        return self.money
+
+    def set_income(self, income):
+        c = random.randint(0, 100)
+        self.income = c
+        return self.income
+
+    def set_hair_type(self, hair_type):
+        c = random.choice(["blonde", "brown", "black", "red"])
+        self.hair_type = c
+        return self.hair_type
+
+    def set_race(self, race):
+        c = random.choice(["white", "black", "asian", "hispanic"])
+        self.race = c
+        return self.race
+
+    def set_nepotism(self, nepotism):
+        c = random.choice([True, False])
+        self.nepotism = c
+        return self.nepotism
+    def set_age(self, age):
+        c = 18
+        self.age = c
+        return self.age
+    def set_name(self, name):
+        c = input("Enter name: ")
+        if c.lower() == "sam altman":
+            self.die()
+            
+        self.name = c
+        return self.name
+    def set_nepotism(self, nepotism):
+        if self.Parent.love_for_child > 50:
+            self.nepotism = True
+        else:
+            self.nepotism = False
+        return self.nepotism
+    def set_parent(self, parent):
+        self.Parent = parent
+        return self.Parent
+    def 
+
+
+
+def main():
+    pass
+    
     
