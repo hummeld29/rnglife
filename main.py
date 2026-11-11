@@ -1,10 +1,12 @@
 import random
 from parents import Parent
 import sys
+import time
+
 
 
 class player:
-    def __init__(self, name, age , height, health, looks, sex, money, income, hair_type, race,nepotism = False):
+    def __init__(self, name, age , height, health, looks, sex, money, income, hair_type, race,nepotism, hair_texture):
 
         self.name = name
         self.age = age
@@ -16,7 +18,8 @@ class player:
         self.income = income
         self.hair_type = hair_type
         self.race = race
-        self.nepotism = False
+        self.nepotism = nepotism
+        self.hair_texture = hair_texture
 
     def display_life_characteristics(self):
         print(f"Name: {self.name}")
@@ -29,7 +32,8 @@ class player:
         print(f"Income: {self.income}")
         print(f"Hair Type: {self.hair_type}")
         print(f"Race: {self.race}")
-        print(f"Nepotism: {self.nepotismc}")
+        print(f"Nepotism: {self.nepotism}")
+        print(f"Hair Texture: {self.hair_texture}")
     def die(self):
         self.health = 0
         print(f"{self.name} has died.")
@@ -117,7 +121,9 @@ class player:
     def set_hair_type(self, hair_type):
         c = random.choice(["blonde", "brown", "black", "red"])
         self.hair_type = c
-        return self.hair_type
+        cb = random.choice(["straight", "curly", "wavy", "coily"])
+        self.hair_texture = cb
+        return self.hair_type, self.hair_texture
 
     def set_race(self, race):
         c = random.choice(["white", "black", "asian", "hispanic"])
@@ -140,16 +146,77 @@ class player:
         self.name = c
         return self.name
     def set_nepotism(self, nepotism):
-        if self.Parent.love_for_child > 50:
-            self.nepotism = True
+        if self.Parent.love_for_child > 50 and self.Parent.wealth_bracket.lower() >= "mid_high":
+            self.nepotism = 0.2
+        if self.Parent.love_for_child <= 50 or self.Parent.wealth_bracket.lower() < "high":
+            self.nepotism = 0.5
+        if self.Parent.love_for_child > 50 and self.Parent.wealth_bracket.lower() < "very_high":
+            self.nepotism = 0.8
+        if self.Parent.love_for_child > 50 and self.Parent.wealth_bracket.lower() >= "elon_musk":
+            self.nepotism = 1.0
         else:
-            self.nepotism = False
+            self.nepotism = 0
+
         return self.nepotism
     def set_parent(self, parent):
         self.Parent = parent
         return self.Parent
-    def 
+    def set_hair_type(self, hair_type):
+        c = random.choice(["blonde", "brown", "black", "red"])
+        self.hair_type = c
+        return self.hair_type, self.hair_texture
+    def set_hair_texture(self, hair_texture):
+        c = random.choice(["straight", "curly", "wavy", "coily"])
+        self.hair_texture = c
+        return self.hair_texture
+    def set_job(self, job, neportism):
+        if self.nepotism == 1:
+            self.job = random.choice(["owner of big company", "kpop idol"])
+        elif self.nepotism == 0.8:
+            self.job = random.choice(["CEO", "CFO", "CTO", "COO"])
+        elif self.nepotism == 0.5:
+            self.job = random.choice(["manager", "supervisor"])
+        elif self.nepotism == 0.2:
+            self.job = random.choice([
+                "Accountant", "Actor", "Architect", "Audiologist", "Baker", "Barber", "Biologist", "Blacksmith", "Bus Driver", "Butcher", "Carpenter", "Cashier", "Chef", "Chemist", "Civil Engineer", "Cleaner", "Cook", "Designer", "Detective", "Electrician", "Editor", "Mechanic", "Farmer", "Fashion Designer", "Firefighter", "Flight Attendant", "Florist", "Gardener", "Graphic Designer", "Hairdresser", "Journalist", "Librarian", "Lifeguard", "Musician", "Nurse", "Photographer", "Plumber", "Police Officer", "Receptionist"
+                ])
+        else:
+            self.job = random.choice(["unemployed", "mcdonlalds fry cook", "coal miner", "human experiment guy","backround actor"])
+        return self.job
+    def get_money(self):
+        return self.money
+    def get_job(self):
+        return self.job
+    def work_job(self):
+        if self.job == "unemployed":
+            print("You can't work because you're unemployed")
+        else:
+            if self.nepotism == 1:
+                daily_salary = random.randint(10000,200000)  # Example salary for high nepotism
+                self.money += daily_salary
+            elif self.nepotism == 0.8:
+                daily_salary = random.randint(5000,100000)  # Example salary for medium-high nepotism
+                self.money += daily_salary
+            elif self.nepotism == 0.5:
+                daily_salary = random.randint(1000,5000)  # Example salary for medium nepotism
+                self.money += daily_salary
+            elif self.nepotism == 0.2:
+                daily_salary = random.randint(500,1000)  # Example salary for low nepotism
+                self.money += daily_salary
+            else:
+                daily_salary = random.randint(100,400)  # Example salary for very low nepotism
+                self.money += daily_salary
 
+    def what_u_wanna_do(self, nepotism):
+        if self.money < 1000:
+            print("You broke your staying home idc or working a job")
+            if self.job != "unemployed":
+                self.work_job()
+        if self.money >= 1000:
+            print("what u wanna do?")
+
+    def stay_home(self):
+    
 
 
 def main():
