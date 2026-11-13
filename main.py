@@ -216,7 +216,25 @@ class player:
             print("what u wanna do?")
 
     def stay_home(self):
-    
+        print("You stayed home and did nothing.")
+        self.money -= 100  
+        if self.money < 0:
+            self.die()
+    def par_death(self):
+        self.Parents = None
+        print("Your parents have died.")
+        self.nepotism = 0  # Losing nepotism after parents die
+    def gamble(self):
+        bet = int(input("Enter your bet: "))
+        self.money -= bet
+        if random.random() < 0.3:
+            self.money += bet * 2
+            print(f"You won {bet * 2} in the gamble.")
+        else:
+            print(f"You lost {bet} in the gamble.")
+        if self.money < 0:
+            self.die()
+
 
 
 def main():
