@@ -234,10 +234,36 @@ class player:
             print(f"You lost {bet} in the gamble.")
         if self.money < 0:
             self.die()
+    def play_games(self,):
+        if random.randint(1, 100) < 5:
+            print("You got addicted to gaming and lost all your money.")
+            self.money = 0
+        else:
+            print("You played games and had fun.")
+            self.money -= 50
+        if self.money < 0:
+            self.die()
+    def __str__(self):
+        return f"Player(name={self.name}, age={self.age}, height={self.height}, health={self.health}, looks={self.looks}, sex={self.sex}, money={self.money}, income={self.income}, hair_type={self.hair_type}, race={self.race}, nepotism={self.nepotism}, hair_texture={self.hair_texture})"
+
+        
+        
 
 
 
 def main():
-    pass
-    
-    
+    Player = player(name=None, age=None, height=None, health=None, looks=None, sex=None, money=None, income=None, hair_type=None, race=None, nepotism=None, hair_texture=None)
+    player_name = Player.set_name(player_name)
+    player_age = Player.set_age(player_age)
+    player_height = Player.set_height(player_height)
+    player_health = Player.set_health(player_health)
+    player_looks = Player.set_looks(player_looks)
+    player_sex = Player.set_sex(player_sex)
+    player_money = Player.set_money(player_money)
+    player_income = Player.set_income(player_income)
+    player_hair_type, player_hair_texture = Player.set_hair_type(player_hair_type)
+    player_race = Player.set_race(player_race)
+    player_nepotism = Player.set_nepotism(player_nepotism)
+    print("Player characteristics:")
+    print("-" * 30)
+    print(Player)
