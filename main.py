@@ -1,8 +1,9 @@
-from asyncio import wait
 import random
-from parents import Parent
+from parents import Parent as ParentModel
 import sys
 import time
+
+# Keep time.sleep as the delay used throughout the game.
 
 class Parent:
     def __init__(self, name, wealth_bracket, children, love_for_child,  ):
@@ -24,7 +25,7 @@ class Parent:
         love_for_child = random.randint(0, 100)
         self.love_for_child = love_for_child
         return self.love_for_child
-    def set_wealth_bracket(self, wealth_bracket):
+    def set_wealth_bracket(self, wealthBrackets):
         wealth_brackets = ["homeless", "low", "low-mid", "mid_low", "mid", "middle_high", "high", "very_high", "elon_musk"]
         number = random.randint(0, 1000)
         if number < 200:
@@ -36,7 +37,7 @@ class Parent:
         elif number < 700:
             self.wealth_bracket = wealth_brackets[3]  # mid_low
         elif number < 800:
-            self.wealth_bracket = wealth_brackets[4]  # mid
+            self.wealth_bracket = wealthBrackets[4]  # mid
         elif number < 900:
             self.wealth_bracket = wealth_brackets[5]  # middle_high
         elif number < 970:
@@ -175,8 +176,20 @@ class player:
         return self.race
 
     def set_nepotism(self, nepotism):
-        c = random.choice([True, False])
-        self.nepotism = c
+        if not hasattr(self, "Parent"):
+            self.nepotism = 0
+            return self.nepotism
+
+        love = self.Parent.love_for_child
+        wealth = self.Parent.wealth_bracket
+        if wealth == "elon_musk" and love > 50:
+            self.nepotism = 1.0
+        elif wealth in ("very_high", "high") and love > 50:
+            self.nepotism = 0.8
+        elif wealth in ("middle_high", "mid", "mid_low") and love > 50:
+            self.nepotism = 0.5
+        else:
+            self.nepotism = 0.2
         return self.nepotism
     def set_age(self, age):
         c = 18
@@ -189,29 +202,8 @@ class player:
             
         self.name = c
         return self.name
-    def set_nepotism(self, nepotism):
-        if self.Parent.love_for_child > 50 and self.Parent.wealth_bracket.lower() >= "mid_high":
-            self.nepotism = 0.2
-        if self.Parent.love_for_child <= 50 or self.Parent.wealth_bracket.lower() < "high":
-            self.nepotism = 0.5
-        if self.Parent.love_for_child > 50 and self.Parent.wealth_bracket.lower() < "very_high":
-            self.nepotism = 0.8
-        if self.Parent.love_for_child > 50 and self.Parent.wealth_bracket.lower() >= "elon_musk":
-            self.nepotism = 1.0
-        else:
-            self.nepotism = 0
-
-        return self.nepotism
-    def set_parent(self, parent):
-        self.Parent = parent
-        return self.Parent
-    def set_hair_type(self, hair_type):
-        c = random.choice(["blonde", "brown", "black", "red"])
-        self.hair_type = c
-        return self.hair_type, self.hair_texture
     def set_hair_texture(self, hair_texture):
-        c = random.choice(["straight", "curly", "wavy", "coily"])
-        self.hair_texture = c
+        self.hair_texture = random.choice(["straight", "curly", "wavy", "coily"])
         return self.hair_texture
     def set_job(self, job, neportism):
         if self.nepotism == 1:
@@ -313,6 +305,12 @@ class player:
         self.money -= 50
         if self.money < 0:
             self.die()
+    def set_parent(self, parent):
+        self.Parent = parent
+        return self.Parent
+
+    def is_alive(self):
+        return self.health > 0
 
     def make_choice(self):
         print("What would you like to do?")
@@ -325,38 +323,39 @@ class player:
         print("7. Cry sadly")
         print("8. Feel happy")
         choice = input("Enter your choice: ").strip().lower()
-        wait(1)
+        time.sleep(1)
         if choice == "1":
             self.stay_home()
-            wait(1)
+            time.sleep(1)
+            print(str(self)))
             self.make_choice()
         elif choice == "2":
             self.work_job()
-            wait(1)
+            time.sleep(1)
             self.make_choice()
         elif choice == "3":
             self.gamble()
-            wait(1)
+            time.sleep(1)
             self.make_choice()
         elif choice == "4":
             print(self)
-            wait(1)
+            time.sleep(1)
             self.make_choice()
         elif choice == "5":
             self.play_games()
-            wait(1)
+            time.sleep(1)
             self.make_choice()
         elif choice == "6":
             self.workout()
-            wait(1)
+            time.sleep(1)
             self.make_choice()
         elif choice == "7":
             self.cry_sadly()
-            wait(1)
+            time.sleep(1)
             self.make_choice()
         elif choice == "8":
             self.feel_happy()
-            wait(1)
+            time.sleep(1)
             self.make_choice()
         else:
             print("Invalid choice. Please try again.")
@@ -366,31 +365,40 @@ class player:
 
 
 def main():
-    Player = player(name=None, age=None, height=None, health=None, looks=None, sex=None, money=None, income=None, hair_type=None, race=None, nepotism=None, hair_texture=None)
-    player_name = Player.set_name(player_name)
-    player_age = Player.set_age(player_age)
-    player_height = Player.set_height(player_height)
-    player_health = Player.set_health(player_health)
-    player_looks = Player.set_looks(player_looks)
-    player_sex = Player.set_sex(player_sex)
-    player_money = Player.set_money(player_money)
-    player_income = Player.set_income(player_income)
-    player_hair_type, player_hair_texture = Player.set_hair_type(player_hair_type)
-    player_race = Player.set_race(player_race)
-    player_nepotism = Player.set_nepotism(player_nepotism)
+    parent = ParentModel("John Doe", "mid", 0, random.randint(0, 100))
+    parent.set_wealth_bracket(parent.wealth_bracket)
+
+    Player = player(None, None, None, 100, None, None, None, None, None, None, None, None)
+    Player.set_parent(parent)
+    Player.set_name(None)
+    Player.set_age(None)
+    Player.set_height(None)
+    Player.set_health(100)
+    Player.set_looks(None)
+    Player.set_sex(None)
+    Player.set_money(None)
+    Player.set_income(None)
+    Player.set_hair_type(None)
+    Player.set_race(None)
+    Player.set_nepotism(None)
+    Player.set_job(None, None)
+
     print("Player characteristics:")
     print("-" * 30)
     print(Player)
 
     while Player.is_alive():
         Player.make_choice()
+
     print("Game Over")
     print(Player)
     print("Thanks for playing!")
-    print("wanna play again?")
+
     play_again = input("Enter 'yes' to play again or 'no' to quit: ").strip().lower()
     if play_again == 'yes':
         main()
     else:
         print("Goodbye!")
         exit()
+if __name__ == "__main__":
+    main()
