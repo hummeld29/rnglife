@@ -1,9 +1,53 @@
+from asyncio import wait
 import random
 from parents import Parent
 import sys
 import time
 
+class Parent:
+    def __init__(self, name, wealth_bracket, children, love_for_child,  ):
+        self.name = name
+        self.wealth_bracket = wealth_bracket
+        self.children = children
+        self.love_for_child = love_for_child
 
+    def add_child(self, child):
+        self.children+= 1
+
+    def get_children(self):
+        return self.children
+    def get_wealth_bracket(self):
+        return self.wealth_bracket
+    def get_love_for_child(self):
+        return self.love_for_child
+    def set_love_for_child(self, love_for_child):
+        love_for_child = random.randint(0, 100)
+        self.love_for_child = love_for_child
+        return self.love_for_child
+    def set_wealth_bracket(self, wealth_bracket):
+        wealth_brackets = ["homeless", "low", "low-mid", "mid_low", "mid", "middle_high", "high", "very_high", "elon_musk"]
+        number = random.randint(0, 1000)
+        if number < 200:
+            self.wealth_bracket = wealth_brackets[0]  # homeless
+        elif number < 400:
+            self.wealth_bracket = wealth_brackets[1]  # low
+        elif number < 600:
+            self.wealth_bracket = wealth_brackets[2]  # low-mid
+        elif number < 700:
+            self.wealth_bracket = wealth_brackets[3]  # mid_low
+        elif number < 800:
+            self.wealth_bracket = wealth_brackets[4]  # mid
+        elif number < 900:
+            self.wealth_bracket = wealth_brackets[5]  # middle_high
+        elif number < 970:
+            self.wealth_bracket = wealth_brackets[6]  # high
+        elif number < 990:
+            self.wealth_bracket = wealth_brackets[7]  # very_high
+        else:
+            self.wealth_bracket = wealth_brackets[8]  # elon_musk
+
+    def __str__(self):
+        return f"Parent: {self.name}, Children: {[child.name for child in self.children]}"
 
 class player:
     def __init__(self, name, age , height, health, looks, sex, money, income, hair_type, race,nepotism, hair_texture):
@@ -245,7 +289,77 @@ class player:
             self.die()
     def __str__(self):
         return f"Player(name={self.name}, age={self.age}, height={self.height}, health={self.health}, looks={self.looks}, sex={self.sex}, money={self.money}, income={self.income}, hair_type={self.hair_type}, race={self.race}, nepotism={self.nepotism}, hair_texture={self.hair_texture})"
+    
+    def workout(self):
+        print("You worked out and improved your health.")
+        if self.health < 100:
+            self.health += 10
+        self.money -= 50
+        if self.money < 0:
+            self.die()
+    def cry_sadly(self):
+        print("You cried sadly.")
+        self.health += 5
+        if self.health > 100:
+            self.health = 100
+        self.money -= 50
+        if self.money < 0:
+            self.die()
+    def feel_happy(self):
+        print("You feel happy.")
+        self.health += 5
+        if self.health > 100:
+            self.health = 100
+        self.money -= 50
+        if self.money < 0:
+            self.die()
 
+    def make_choice(self):
+        print("What would you like to do?")
+        print("1. Stay home")
+        print("2. Work a job")
+        print("3. Gamble")
+        print("4. Check your status")
+        print("5. Play games")
+        print("6. Workout")
+        print("7. Cry sadly")
+        print("8. Feel happy")
+        choice = input("Enter your choice: ").strip().lower()
+        wait(1)
+        if choice == "1":
+            self.stay_home()
+            wait(1)
+            self.make_choice()
+        elif choice == "2":
+            self.work_job()
+            wait(1)
+            self.make_choice()
+        elif choice == "3":
+            self.gamble()
+            wait(1)
+            self.make_choice()
+        elif choice == "4":
+            print(self)
+            wait(1)
+            self.make_choice()
+        elif choice == "5":
+            self.play_games()
+            wait(1)
+            self.make_choice()
+        elif choice == "6":
+            self.workout()
+            wait(1)
+            self.make_choice()
+        elif choice == "7":
+            self.cry_sadly()
+            wait(1)
+            self.make_choice()
+        elif choice == "8":
+            self.feel_happy()
+            wait(1)
+            self.make_choice()
+        else:
+            print("Invalid choice. Please try again.")
         
         
 
@@ -267,3 +381,16 @@ def main():
     print("Player characteristics:")
     print("-" * 30)
     print(Player)
+
+    while Player.is_alive():
+        Player.make_choice()
+    print("Game Over")
+    print(Player)
+    print("Thanks for playing!")
+    print("wanna play again?")
+    play_again = input("Enter 'yes' to play again or 'no' to quit: ").strip().lower()
+    if play_again == 'yes':
+        main()
+    else:
+        print("Goodbye!")
+        exit()
