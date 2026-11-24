@@ -2,7 +2,6 @@ import random
 import sys
 import time
 
-# Keep time.sleep as the delay used throughout the game.
 
 
 class Parent:
